@@ -1,12 +1,11 @@
 import React from 'react';
-import './App.css'
-import Register from "./register-page/Register";
+import Container from "./register-page/Container";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Register />
+        <Container />
       </header>
     </div>
   );
