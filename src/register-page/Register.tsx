@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, DatePicker, Select, Space} from 'antd';
 import nameJSON from "../assets/name.json";
+import {request} from "../server/request";
 
 interface State {
     groupNum: number
