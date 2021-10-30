@@ -42,6 +42,10 @@ export default class Login extends React.Component<Prop, State> {
                         this.setState({state: 1, validateStatus: "", help: "At least 6 digits", username: values["itsc"]})
                     else if(res['errorCode'] === "0104")
                         this.setState({validateStatus: "error", help: "Your ITSC is NOT recorded in our database"})
+                    else if(res['errorCode'] === "0105") {
+                        this.setState({validateStatus: "success"})
+                        this.props.successCallback(res.data.itsc, res.data.id, 1, res.data.team)
+                    }
 
                 })
         else if(this.state.state===1) {

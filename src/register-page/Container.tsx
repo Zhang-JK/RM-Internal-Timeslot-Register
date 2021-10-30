@@ -9,6 +9,10 @@ interface State {
     isLogin: boolean
     id: number
     username: string
+    // 0 for member, 1 for internal
+    role: number
+    // for internal only
+    team: number
 }
 
 export default class Container extends React.Component<{}, State> {
@@ -18,12 +22,14 @@ export default class Container extends React.Component<{}, State> {
         this.state = {
             isLogin: false,
             id: 0,
-            username: ""
+            username: "",
+            role: 0,
+            team: 0
         }
     }
 
-    callback = (username: string, id: number) => {
-        this.setState({id: id, username: username, isLogin: true})
+    callback = (username: string, id: number, role: undefined|number, team: undefined|number) => {
+        this.setState({id: id, username: username, isLogin: true, role: role===undefined?0:role, team: team===undefined?0:team})
     }
 
     render() {
@@ -35,7 +41,8 @@ export default class Container extends React.Component<{}, State> {
                             <div className="d-flex flex-column justify-content-center">
                                 <img className="m-auto" src={logo} width={189} height={141} alt="logo"/>
                                 <h2>HKUST RoboMaster Team</h2>
-                                {/*<h5 className="m-1">Internal development register</h5>*/}
+                                {this.state.isLogin && <h5 className="m-1">{"Login with: "+this.state.username}</h5> }
+                                {this.state.isLogin && <h5 className="m-1">{"Team "+this.state.team}</h5> }
                             </div>
                         </Typography.Title>
                     </Card>

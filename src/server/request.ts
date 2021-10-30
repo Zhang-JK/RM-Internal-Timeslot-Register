@@ -1,8 +1,7 @@
-import ProjectConfig from "../assets/ProjectConfig.json"
-
 export async function request(url: string, body: any) {
+    const server = "http://localhost:8080/api"
     return await fetch(
-        `${ProjectConfig.server}/${url}`,
+        `${server}/${url}`,
         {
             mode: 'cors',
             credentials: 'omit',
