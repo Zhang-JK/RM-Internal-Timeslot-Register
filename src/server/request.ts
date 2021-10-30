@@ -1,4 +1,4 @@
-export async function request(url: string, body: any) {
+export async function requestPost(url: string, body: any) {
     const server = "http://localhost:8080/api"
     return await fetch(
         `${server}/${url}`,
@@ -12,6 +12,23 @@ export async function request(url: string, body: any) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
+        }
+    ).then(res => res.json())
+}
+
+export async function requestGet(url: string) {
+    const server = "http://localhost:8080/api"
+    return await fetch(
+        `${server}/${url}`,
+        {
+            mode: 'cors',
+            credentials: 'omit',
+            redirect: 'follow',
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
         }
     ).then(res => res.json())
 }

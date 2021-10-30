@@ -4,6 +4,7 @@ import Register from "./Register";
 import logo from "../assets/logo.png"
 import RegisterInfo from "./RegisterInfo";
 import Login from "./Login";
+import {requestGet} from "../server/request";
 
 interface State {
     isLogin: boolean
@@ -13,6 +14,9 @@ interface State {
     role: number
     // for internal only
     team: number
+    data: any
+    loading: boolean
+    availableDays: string[]
 }
 
 export default class Container extends React.Component<{}, State> {
@@ -24,12 +28,25 @@ export default class Container extends React.Component<{}, State> {
             id: 0,
             username: "",
             role: 0,
-            team: 0
+            team: 0,
+            data: undefined,
+            loading: true,
+            availableDays: []
         }
     }
 
     callback = (username: string, id: number, role: undefined|number, team: undefined|number) => {
         this.setState({id: id, username: username, isLogin: true, role: role===undefined?0:role, team: team===undefined?0:team})
+        requestGet("regState")
+            .then((res: any) => {
+                console.log(res)
+                // @ts-ignore
+                this.setState({
+                    data: res.data,
+                    loading: false,
+                    availableDays: Array.from(new Set(res.data.map((item:any) => item.date)))
+                })
+            })
     }
 
     render() {
@@ -49,13 +66,13 @@ export default class Container extends React.Component<{}, State> {
                 </PageHeader>
 
                 {this.state.isLogin &&
-                <Card className="m-3">
-                    <RegisterInfo />
+                <Card hoverable={true} style={{marginTop: 30, marginBottom: 25, marginLeft: 8, marginRight: 8, padding: 5}}>
+                    <RegisterInfo data={this.state.data} availableDays={this.state.availableDays} loading={this.state.loading} />
                 </Card>
                 }
                 {this.state.isLogin &&
-                <Card className="m-3">
-                    <Register/>
+                <Card hoverable={true} className="m-1">
+                    <Register data={this.state.data} availableDays={this.state.availableDays} loading={this.state.loading} personId={this.state.id} group={this.state.team} />
                 </Card>
                 }
 

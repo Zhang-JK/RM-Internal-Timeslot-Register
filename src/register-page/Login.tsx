@@ -1,6 +1,6 @@
 import {Button, Form, Input } from 'antd';
 import React from 'react';
-import {request} from "../server/request";
+import {requestPost} from "../server/request";
 
 interface Prop {
     successCallback: Function
@@ -33,7 +33,7 @@ export default class Login extends React.Component<Prop, State> {
     itscCheck = (values: any) => {
         this.setState({validateStatus: "validating"})
         if(this.state.state===0)
-            request("login", {username: values["itsc"]})
+            requestPost("login", {username: values["itsc"]})
                 .then((res: any) => {
                     // console.log(res)
                     if(res['errorCode'] === "0000")
@@ -54,7 +54,7 @@ export default class Login extends React.Component<Prop, State> {
                 this.setState({validateStatus: "error", help: "At least 6 digits"})
                 return ;
             }
-            request("signup", {username: this.state.username, password: password})
+            requestPost("signup", {username: this.state.username, password: password})
                 .then((res: any) => {
                     // console.log(res)
                     if(res['errorCode'] === "0000")
@@ -65,7 +65,7 @@ export default class Login extends React.Component<Prop, State> {
         }
         else if(this.state.state===2) {
             const password = values["password"].split(" ").join("")
-            request("passwordVerify", {username: this.state.username, password: password})
+            requestPost("passwordVerify", {username: this.state.username, password: password})
                 .then((res: any) => {
                     console.log(res)
                     if(res['errorCode'] === "0000")
