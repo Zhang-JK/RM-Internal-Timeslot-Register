@@ -8,10 +8,12 @@ interface Prop {
     data: []
     loading: boolean
     availableDays: string[]
+    availableRooms: string[]
 }
 
 interface State {
     selectedDate: string
+    selectedRoom: string
 }
 
 const columns = [
@@ -41,12 +43,17 @@ export default class RegisterInfo extends React.Component<Prop, State> {
     constructor(prop: any) {
         super(prop);
         this.state = {
-            selectedDate: ""
+            selectedDate: "",
+            selectedRoom: ""
         }
     }
 
     handleChange = (value: string) => {
         this.setState({selectedDate: value})
+    }
+
+    handleRoomChange = (value: string) => {
+        this.setState({selectedRoom: value})
     }
 
     render() {
@@ -59,8 +66,12 @@ export default class RegisterInfo extends React.Component<Prop, State> {
                     <Select className="m-auto" placeholder="Select Date Here" style={{width: 150}} onChange={this.handleChange}>
                         {this.props.availableDays.map(item => <Option value={item}> {item} </Option>)}
                     </Select>
+                    <Select defaultValue="All Rooms" className="m-auto" placeholder="Select Room Here" style={{width: 150}} onChange={this.handleRoomChange}>
+                        <Option value=""> All Rooms </Option>
+                        {this.props.availableRooms.map(item => <Option value={item}> {item} </Option>)}
+                    </Select>
                     <Table style={{width: "100%", marginTop: 20}}
-                        dataSource={this.props.data.filter((item: any) => item.date === this.state.selectedDate).map((item: any) => {
+                        dataSource={this.props.data.filter((item: any) => item.date === this.state.selectedDate && (this.state.selectedRoom===""?true:item.location===this.state.selectedRoom)).map((item: any) => {
                             return {
                                 startTime: item.startTime.substring(0, item.startTime.length-3),
                                 endTime: item.endTime.substring(0, item.startTime.length-3),

@@ -44,7 +44,7 @@ export default class Login extends React.Component<Prop, State> {
                         this.setState({validateStatus: "error", help: "Your ITSC is NOT recorded in our database"})
                     else if(res['errorCode'] === "0105") {
                         this.setState({validateStatus: "success"})
-                        this.props.successCallback(res.data.itsc, res.data.id, 1, res.data.team)
+                        this.props.successCallback(res.data.itsc, res.data.id, res.data.role, res.data.teamId, res.data.name)
                     }
 
                 })
