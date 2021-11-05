@@ -63,13 +63,19 @@ export default class RegisterInfo extends React.Component<Prop, State> {
                 {this.props.loading && <div><LoadingOutlined/> Loading... </div>}
                 {!this.props.loading &&
                 <div className="d-flex flex-column m-1">
-                    <Select className="m-auto" placeholder="Select Date Here" style={{width: 150}} onChange={this.handleChange}>
-                        {this.props.availableDays.map(item => <Option value={item}> {item} </Option>)}
-                    </Select>
-                    <Select defaultValue="All Rooms" className="m-auto" placeholder="Select Room Here" style={{width: 150}} onChange={this.handleRoomChange}>
-                        <Option value=""> All Rooms </Option>
-                        {this.props.availableRooms.map(item => <Option value={item}> {item} </Option>)}
-                    </Select>
+                    <div className='m-2 d-flex flex-row'>
+                        <div style={{fontSize: 17}}>Date: </div>
+                        <Select className="m-auto" defaultValue={this.state.selectedDate} placeholder="Select Date Here" style={{width: 130}} onChange={this.handleChange}>
+                            {this.props.availableDays.map(item => <Option value={item}> {item} </Option>)}
+                        </Select>
+                    </div>
+                    <div className="d-flex flex-row m-2">
+                        <div style={{fontSize: 17}}>Room: </div>
+                        <Select className="m-auto" defaultValue={this.state.selectedRoom} placeholder="Select Room Here" style={{width: 130}} onChange={this.handleRoomChange}>
+                            <Option value=""> All Rooms </Option>
+                            {this.props.availableRooms.map(item => <Option value={item}> {item} </Option>)}
+                        </Select>
+                    </div>
                     <Table style={{width: "100%", marginTop: 20}}
                         dataSource={this.props.data.filter((item: any) => item.date === this.state.selectedDate && (this.state.selectedRoom===""?true:item.location===this.state.selectedRoom)).map((item: any) => {
                             return {

@@ -9,10 +9,13 @@ interface Prop {
     availableDays: string[]
     reload: Function
     regId: number
+    updateInfo: boolean
+    finishUpdate: Function
 }
 
 interface State {
     loading: boolean
+    selectedDate: string
     data: []
 }
 
@@ -22,6 +25,27 @@ export default class MyRegisterInfo extends React.Component<Prop, State> {
         this.state = {
             loading: false,
             data: [],
+            selectedDate: ''
+        }
+    }
+
+    componentDidUpdate(prevProps: Readonly<Prop>, prevState: Readonly<State>, snapshot?: any) {
+        if (this.props.updateInfo) {
+            this.setState({
+                loading: true
+            });
+            requestPost("myReg", {
+                id: this.props.regId,
+                date: this.state.selectedDate
+            })
+                .then((res: any) => {
+                    // @ts-ignore
+                    this.setState({
+                        data: res.data,
+                        loading: false
+                    })
+                })
+            this.props.finishUpdate()
         }
     }
 
@@ -57,8 +81,8 @@ export default class MyRegisterInfo extends React.Component<Prop, State> {
         },
     ];
 
-    handleChange = (value: number) => {
-        this.setState({loading: true})
+    handleChange = (value: string) => {
+        this.setState({loading: true, selectedDate: value})
         requestPost("myReg", {
             id: this.props.regId,
             date: value
@@ -79,10 +103,13 @@ export default class MyRegisterInfo extends React.Component<Prop, State> {
                 {this.state.loading && <div><LoadingOutlined/> Loading... </div>}
                 {!this.state.loading &&
                 <div className="d-flex flex-column m-3">
-                    <Select className="m-auto" placeholder="Select Date Here" style={{width: 150}}
-                            onChange={this.handleChange}>
-                        {this.props.availableDays.map(item => <Option value={item}> {item} </Option>)}
-                    </Select>
+                    <div className='m-2 d-flex flex-row'>
+                        <div style={{fontSize: 17}}>Date: </div>
+                        <Select className="m-auto" placeholder="Select Date Here" style={{width: 150}}
+                                onChange={this.handleChange} value={this.state.selectedDate}>
+                            {this.props.availableDays.map(item => <Option value={item}> {item} </Option>)}
+                        </Select>
+                    </div>
                     {this.state.data !== undefined && this.state.data.length > 0 &&
                     < Table style={{width: "100%", marginTop: 20}}
                             dataSource={this.state.data.map((item: any) => {

@@ -63,7 +63,7 @@ export default class Register extends React.Component<Prop, State> {
                 else if (res.errorCode === "0202")
                     this.setState({state: 3, errorMessage: "Timeslot do not exist"})
                 else if (res.errorCode === "0203")
-                    this.setState({state: 3, errorMessage: "You have already registered for this timeslot"})
+                    this.setState({state: 3, errorMessage: "You have already registered some room for this timeslot"})
                 else if (res.errorCode === "0204")
                     this.setState({state: 3, errorMessage: "This timeslot is not available"})
                 else if (res.errorCode === "0205")

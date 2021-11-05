@@ -1,5 +1,5 @@
 export async function requestPost(url: string, body: any) {
-    const server = "http://localhost:8080/api"
+    const server = "http://laojk.club:8080/api"
     return await fetch(
         `${server}/${url}`,
         {
@@ -17,7 +17,7 @@ export async function requestPost(url: string, body: any) {
 }
 
 export async function requestGet(url: string) {
-    const server = "http://localhost:8080/api"
+    const server = "http://laojk.club:8080/api"
     return await fetch(
         `${server}/${url}`,
         {

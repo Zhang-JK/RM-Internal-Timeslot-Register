@@ -19,6 +19,7 @@ interface State {
     loading: boolean
     availableDays: string[]
     availableRooms: string[]
+    updateInfo: boolean
 }
 
 export default class Container extends React.Component<{}, State> {
@@ -35,8 +36,13 @@ export default class Container extends React.Component<{}, State> {
             data: undefined,
             loading: true,
             availableDays: [],
-            availableRooms: []
+            availableRooms: [],
+            updateInfo: false
         }
+    }
+
+    finishUpdate = () => {
+        this.setState({updateInfo: false})
     }
 
     reload = () => {
@@ -48,6 +54,7 @@ export default class Container extends React.Component<{}, State> {
                 this.setState({
                     data: res.data,
                     loading: false,
+                    updateInfo: true,
                     availableDays: Array.from(new Set(res.data.map((item:any) => item.date))),
                     availableRooms: Array.from(new Set(res.data.map((item:any) => item.location)))
                 })
@@ -87,7 +94,7 @@ export default class Container extends React.Component<{}, State> {
                 }
                 {this.state.isLogin &&
                 <Card hoverable={true} style={{marginTop: 30, marginBottom: 25, marginLeft: 8, marginRight: 8, padding: 5}}>
-                    <MyRegisterInfo availableDays={this.state.availableDays} regId={this.state.id} reload={this.reload}/>
+                    <MyRegisterInfo finishUpdate={this.finishUpdate} updateInfo={this.state.updateInfo} availableDays={this.state.availableDays} regId={this.state.id} reload={this.reload} />
                 </Card>
                 }
 
